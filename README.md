@@ -34,6 +34,11 @@ Bitcoin monetary adoption and SDR exposure are distinct constructs. Their intera
 | Country roster and source-audit validation | `src/bsmpm/source_audit.py` | Implemented |
 | Event-shock aggregation and authority alignment | `src/bsmpm/frequency.py` | Implemented |
 | SDR exposure and sterilisation-cost measures | `src/bsmpm/sdr.py` | Implemented |
+| Integrated monetary-policy transmission | `src/bsmpm/integrated.py` | Implemented specification |
+| Identification diagnostics | `src/bsmpm/identification.py` | Implemented pre-estimation diagnostics |
+| Reproducible local data assembly | `src/bsmpm/data_pipeline.py` | Implemented local CSV pipeline |
+| Monetary autonomy index | `src/bsmpm/autonomy.py` | Researcher-defined composite |
+| Structural dynamics | `src/bsmpm/structural.py` | Illustrative scenario scaffold |
 | Scenario simulation | `src/bsmpm/simulate.py` | Illustrative reduced-form simulation |
 
 The Python package retains the `bsmpm` import namespace for continuity with the original model. The repository's broader name does not imply that every component has already been integrated into one structural model.
