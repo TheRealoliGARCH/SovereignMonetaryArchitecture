@@ -1,6 +1,6 @@
 import unittest
 
-from bsmpm.structural import (
+from sma.structural import (
     MonetaryState, StructuralParameters, policy_loss, transition_one_period,
 )
 
