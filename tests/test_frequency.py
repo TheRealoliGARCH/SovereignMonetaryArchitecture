@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from bsmpm.frequency import aggregate_event_shocks, attach_authority_shocks
+from sma.frequency import aggregate_event_shocks, attach_authority_shocks
 
 
 class TestFrequencyArchitecture(unittest.TestCase):
