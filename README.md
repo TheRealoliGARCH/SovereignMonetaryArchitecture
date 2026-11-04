@@ -16,7 +16,12 @@ The current architecture covers:
 - **Monetary institutions:** explicit distinction between country markets and the monetary authorities responsible for policy shocks.
 - **Multi-frequency data:** event-level policy shocks aggregated to monthly or quarterly authority-level series, then aligned to country panels.
 - **International monetary constraints:** SDR allocations and holdings, foreign-exchange reserves, GDP, exchange-rate deviation measures, and sterilisation-cost proxies.
-- **Data governance:** source registries, country-frame audits, missingness summaries, and SHA-256 provenance manifests.\n- **Integrated transmission:** joint policy-shock, Bitcoin monetary-use, and SDR-exposure interaction design.\n- **Identification diagnostics:** within-authority shock variation, cluster counts, and complete-case support.\n- **Reproducible data assembly:** local CSV ingestion, source metadata, file hashes, and validated country-period joins.\n- **Monetary autonomy:** transparent, weighted composite with explicit component directions.\n- **Structural dynamics:** explicit state-transition and quadratic scenario-loss scaffold.
+- **Data governance:** source registries, country-frame audits, missingness summaries, and SHA-256 provenance manifests.
+- **Integrated transmission:** joint policy-shock, Bitcoin monetary-use, and SDR-exposure interaction design.
+- **Identification diagnostics:** within-authority shock variation, cluster counts, and complete-case support.
+- **Reproducible data assembly:** local CSV ingestion, source metadata, file hashes, and validated country-period joins.
+- **Monetary autonomy:** transparent, weighted composite with explicit component directions.
+- **Structural dynamics:** explicit state-transition and quadratic scenario-loss scaffold.
 
 The framework is designed to support the empirical investigation of a central question:
 
@@ -175,7 +180,12 @@ python -m bsmpm.simulate --output outputs
 - `src/bsmpm/data_io.py` — data ingestion, source registry, and provenance manifests.
 - `src/bsmpm/source_audit.py` — country-frame and source-catalogue validation.
 - `src/bsmpm/frequency.py` — event-shock aggregation and monetary-authority alignment.
-- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.\n- `src/bsmpm/integrated.py` — integrated monetary-policy transmission specification.\n- `src/bsmpm/identification.py` — pre-estimation identification diagnostics.\n- `src/bsmpm/data_pipeline.py` — documented local data ingestion and assembly.\n- `src/bsmpm/autonomy.py` — weighted monetary-autonomy index.\n- `src/bsmpm/structural.py` — structural-dynamics scenario scaffold.
+- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.
+- `src/bsmpm/integrated.py` — integrated monetary-policy transmission specification.
+- `src/bsmpm/identification.py` — pre-estimation identification diagnostics.
+- `src/bsmpm/data_pipeline.py` — documented local data ingestion and assembly.
+- `src/bsmpm/autonomy.py` — weighted monetary-autonomy index.
+- `src/bsmpm/structural.py` — structural-dynamics scenario scaffold.
 - `src/bsmpm/simulate.py` — illustrative scenario runner.
 - `data/` — documented data contracts and empty templates.
 - `tests/` — deterministic unit tests, including synthetic test data.
@@ -184,7 +194,12 @@ python -m bsmpm.simulate --output outputs
 - `docs/DATA_INGESTION.md` — ingestion and provenance workflow.
 - `docs/PR4_SOURCE_AUDIT.md` — country frame, source catalogue, and measurement audit.
 - `docs/PR5_AUTHORITY_MULTIFREQUENCY.md` — authority-aware inference and frequency architecture.
-- `docs/PR6_SDR_EXPOSURE.md` — SDR data contract, measures, and limitations.\n- `docs/PR8_INTEGRATED_TRANSMISSION.md` — integrated transmission design.\n- `docs/PR9_IDENTIFICATION.md` — identification and design diagnostics.\n- `docs/PR10_DATA_PIPELINE.md` — reproducible empirical data pipeline.\n- `docs/PR11_MONETARY_AUTONOMY.md` — autonomy-index methodology.\n- `docs/PR12_STRUCTURAL_SCAFFOLD.md` — structural-dynamics assumptions.
+- `docs/PR6_SDR_EXPOSURE.md` — SDR data contract, measures, and limitations.
+- `docs/PR8_INTEGRATED_TRANSMISSION.md` — integrated transmission design.
+- `docs/PR9_IDENTIFICATION.md` — identification and design diagnostics.
+- `docs/PR10_DATA_PIPELINE.md` — reproducible empirical data pipeline.
+- `docs/PR11_MONETARY_AUTONOMY.md` — autonomy-index methodology.
+- `docs/PR12_STRUCTURAL_SCAFFOLD.md` — structural-dynamics assumptions.
 - `.github/workflows/tests.yml` — continuous integration across Python 3.10–3.12.
 
 ## Research roadmap
