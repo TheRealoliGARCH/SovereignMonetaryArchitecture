@@ -36,6 +36,28 @@ class DataPipelineTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             merge_country_period_sources({"rates": left, "prices": duplicate})
 
+    def test_rejects_invalid_source_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "rates.csv"
+            pd.DataFrame({"iso3": ["IND"], "period": ["2025Q1"], "rate": [6.5]}).to_csv(path, index=False)
+            with self.assertRaisesRegex(ValueError, "ISO YYYY-MM-DD"):
+                load_documented_csv(
+                    path, source_id="RBI-1", source_name="Example",
+                    source_url="https://example.org/data", access_date="04-11-2026",
+                    license_status="review required", required_columns=["iso3", "period", "rate"],
+                )
+
+    def test_rejects_empty_required_columns(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "rates.csv"
+            pd.DataFrame({"rate": [6.5]}).to_csv(path, index=False)
+            with self.assertRaisesRegex(ValueError, "required_columns"):
+                load_documented_csv(
+                    path, source_id="RBI-1", source_name="Example",
+                    source_url="https://example.org/data", access_date="2026-11-04",
+                    license_status="review required", required_columns=[],
+                )
+
     def test_rejects_overlapping_columns(self):
         a = pd.DataFrame({"iso3": ["IND"], "period": ["Q1"], "value": [1]})
         b = pd.DataFrame({"iso3": ["IND"], "period": ["Q1"], "value": [2]})

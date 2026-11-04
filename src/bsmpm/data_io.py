@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 PANEL_COLUMNS = ("country", "period", "outcome", "policy_shock", "btc_use_share")
@@ -44,7 +45,7 @@ def validate_empirical_dataset(data: pd.DataFrame) -> dict[str, Any]:
             raise ValueError(f"{column} contains nonnumeric values")
         frame[column] = converted
         observed = frame[column].dropna().to_numpy(dtype=float)
-        if not all(abs(value) != float("inf") for value in observed):
+        if not np.isfinite(observed).all():
             raise ValueError(f"{column} must contain only finite values")
         missing_counts[column] = int(frame[column].isna().sum())
     observed_share = frame["btc_use_share"].dropna()

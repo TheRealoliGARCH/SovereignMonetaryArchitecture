@@ -110,21 +110,29 @@ def estimate_transmission_panel(
         raise ValueError("design matrix is rank deficient; check collinearity and panel variation")
     if nobs <= nparams:
         raise ValueError("insufficient residual degrees of freedom")
-    beta, _, _, _ = np.linalg.lstsq(design, y, rcond=None)
+    # QR avoids forming X'X, which squares the design matrix condition number.
+    q_matrix, r_matrix = np.linalg.qr(design, mode="reduced")
+    diagonal = np.abs(np.diag(r_matrix))
+    rank_tolerance = np.finfo(float).eps * max(design.shape) * diagonal.max()
+    if np.count_nonzero(diagonal > rank_tolerance) != nparams:
+        raise ValueError("design matrix is numerically rank deficient; check collinearity and panel variation")
+    beta = np.linalg.solve(r_matrix, q_matrix.T @ y)
     residual = y - design @ beta
-    bread = np.linalg.inv(design.T @ design)
-    meat = np.zeros((nparams, nparams), dtype=float)
-    groups = frame[cluster_column].astype(str).to_numpy()
-    unique_groups = np.unique(groups)
+    groups = frame[cluster_column].to_numpy()
+    codes, unique_groups = pd.factorize(groups, sort=False)
     g = len(unique_groups)
     if g < 2:
         raise ValueError("at least two clusters are required")
-    for group in unique_groups:
-        mask = groups == group
-        score = design[mask].T @ residual[mask]
-        meat += np.outer(score, score)
+    # In QR coordinates, X_g' u_g = R' (Q_g' u_g). This computes the
+    # one-way cluster sandwich without explicitly inverting X'X.
+    meat_q = np.zeros((nparams, nparams), dtype=float)
+    for code in range(g):
+        mask = codes == code
+        score = q_matrix[mask].T @ residual[mask]
+        meat_q += np.outer(score, score)
+    r_inverse = np.linalg.solve(r_matrix, np.eye(nparams))
     correction = (g / (g - 1.0)) * ((nobs - 1.0) / (nobs - nparams))
-    covariance = correction * bread @ meat @ bread
+    covariance = correction * (r_inverse @ meat_q @ r_inverse.T)
     standard_errors = np.sqrt(np.maximum(np.diag(covariance), 0.0))
     t_stats = np.divide(beta, standard_errors, out=np.full_like(beta, np.nan), where=standard_errors > 0)
     p_values = np.array([math.erfc(abs(v) / math.sqrt(2.0)) if math.isfinite(v) else math.nan for v in t_stats])

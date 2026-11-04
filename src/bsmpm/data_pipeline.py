@@ -35,10 +35,25 @@ def load_documented_csv(
     file_path = Path(path)
     if not file_path.is_file():
         raise FileNotFoundError(file_path)
-    if not all([source_id.strip(), source_name.strip(), source_url.strip(),
-                access_date.strip(), license_status.strip()]):
+    metadata = {
+        "source_id": source_id, "source_name": source_name,
+        "source_url": source_url, "access_date": access_date,
+        "license_status": license_status,
+    }
+    if any(not isinstance(value, str) or not value.strip() for value in metadata.values()):
         raise ValueError("source identity, URL, access date, and license status are required")
-    frame = pd.read_csv(file_path)
+    if not source_url.startswith(("https://", "http://")):
+        raise ValueError("source_url must use http:// or https://")
+    from datetime import date
+    try:
+        date.fromisoformat(access_date)
+    except ValueError as exc:
+        raise ValueError("access_date must use ISO YYYY-MM-DD format") from exc
+    if not required_columns or any(not isinstance(column, str) or not column for column in required_columns):
+        raise ValueError("required_columns must contain nonempty column names")
+    frame = pd.read_csv(file_path, encoding="utf-8")
+    if frame.empty:
+        raise ValueError("source CSV must contain at least one observation")
     missing = [column for column in required_columns if column not in frame.columns]
     if missing:
         raise ValueError(f"{file_path.name} is missing required columns: {missing}")
@@ -69,6 +84,8 @@ def merge_country_period_sources(
     """
     if not sources:
         raise ValueError("at least one source table is required")
+    if not keys or len(set(keys)) != len(keys) or any(not isinstance(key, str) or not key for key in keys):
+        raise ValueError("keys must contain unique, nonempty column names")
     if how not in {"inner", "left", "outer"}:
         raise ValueError("how must be inner, left, or outer")
     merged = None
