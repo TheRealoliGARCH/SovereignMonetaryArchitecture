@@ -88,7 +88,7 @@ def attach_authority_shocks(
     if merged[[authority, shock_series]].isna().any().any():
         raise ValueError("every panel country must have a roster authority and shock-series mapping")
     out = merged.merge(
-        authority_shocks, on=shock_key + [period], how="left",
+        authority_shocks, on=shock_key, how="left",
         validate="many_to_one", indicator=True,
     )
     if out["_merge"].ne("both").any():
