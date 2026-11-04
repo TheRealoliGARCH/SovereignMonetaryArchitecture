@@ -43,6 +43,20 @@ One row per country-period. Required default columns:
 
 Optional controls can be passed by column name. Define outcome units, shock sign convention, frequency, sample coverage, and all transformations before estimation. Missingness is handled by complete-case deletion in this first version; this is transparent but may induce selection bias.
 
+## Source-frame implications (v0.4)
+
+The IMF WP/24/224 sample has 29 country-market observations but 20 monetary
+authorities. Ten euro-area country markets share the ECB shock series. The
+current country-clustered covariance estimator does not explicitly account
+for this common-authority shock structure; estimates using that sample require
+an authority-aware inference design before being treated as final.
+
+The source audit also finds no verified globally comparable Bitcoin monetary-
+use share. Exchange turnover, search interest, all-crypto composite indices,
+and general cryptocurrency surveys are not interchangeable with
+`btc_use_share`. Any proxy analysis must use a separate variable name and
+be reported as a different estimand. See `docs/PR4_SOURCE_AUDIT.md`.
+
 ## Identification and inference limitations
 
 - Country and time fixed effects control for additive, time-invariant country heterogeneity and common period effects; they do not remove time-varying confounding.
