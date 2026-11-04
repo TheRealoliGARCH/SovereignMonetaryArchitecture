@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from bsmpm.identification import diagnose_identification
+from sma.identification import diagnose_identification
 
 
 class IdentificationDiagnosticsTests(unittest.TestCase):
