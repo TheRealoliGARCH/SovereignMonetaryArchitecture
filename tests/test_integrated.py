@@ -16,7 +16,7 @@ class IntegratedTransmissionTests(unittest.TestCase):
             for t in range(6):
                 shock = float((c + 2 * t) % 5) / 10
                 btc = 0.05 + 0.02 * c + 0.01 * t
-                sdr = 0.1 + 0.03 * c
+                sdr = 0.1 + 0.03 * c + 0.01 * t
                 y = 1.2 * shock + 0.4 * btc - 0.2 * sdr + 0.7 * shock * btc * sdr
                 rows.append({
                     "country": f"C{c}", "period": f"P{t}",
