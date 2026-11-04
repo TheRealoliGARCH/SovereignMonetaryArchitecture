@@ -29,7 +29,7 @@ def sample_registry():
         "frequency": "quarterly", "coverage": "2020Q1-2020Q2",
         "retrieval_date": "2026-11-04",
         "license": "Review provider terms before redistribution",
-        "transformation": "None", "status": "metadata-example-not-an-observation",
+        "transformation": "No transformation", "status": "metadata-example-not-an-observation",
     }])
 
 
@@ -59,7 +59,7 @@ class DataIngestionTests(unittest.TestCase):
 
     def test_nonnumeric_outcome_rejected(self):
         frame = sample_panel()
-        frame.loc[0, "outcome"] = "not-a-number"
+        frame["outcome"] = frame["outcome"].astype(object)\n        frame.loc[0, "outcome"] = "not-a-number"
         with self.assertRaisesRegex(ValueError, "nonnumeric"):
             validate_empirical_dataset(frame)
 
