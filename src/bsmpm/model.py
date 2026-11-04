@@ -30,9 +30,11 @@ def logistic(z: float) -> float:
     z = _finite("z", z)
     if z >= 0:
         e = math.exp(-z)
-        return 1.0 / (1.0 + e)
-    e = math.exp(z)
-    return e / (1.0 + e)
+        value = 1.0 / (1.0 + e)
+    else:
+        e = math.exp(z)
+        value = e / (1.0 + e)
+    return min(math.nextafter(1.0, 0.0), max(math.nextafter(0.0, 1.0), value))
 
 
 def monetary_transmission_linear(
