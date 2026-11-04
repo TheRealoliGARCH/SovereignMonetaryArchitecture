@@ -15,7 +15,10 @@ def sample_panel(seed=17):
     time_effect = {t: rng.normal(scale=0.3) for t in periods}
     for i, country in enumerate(countries):
         for period in periods:
-            adoption = min(0.85, 0.10 + 0.035 * i + 0.012 * period)
+            adoption = float(np.clip(
+                0.10 + 0.035 * i + 0.012 * period + rng.normal(scale=0.025),
+                0.02, 0.90,
+            ))
             shock = rng.normal()
             outcome = (
                 country_effect[country] + time_effect[period]
