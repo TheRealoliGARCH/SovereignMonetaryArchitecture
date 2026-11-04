@@ -14,6 +14,7 @@ A reproducible Python implementation of the BSMPM research architecture. The rep
 - A source-audited 29-country monetary-policy sample frame and empirical series catalogue.
 - Authority-level clustered inference and event-to-month/quarter shock aggregation.
 - Separate event, daily-market, and lower-frequency macro data architecture.
+- SDR exposure metrics, exchange-rate deviation measures, and sterilisation-cost proxies.
 
 ## Model conventions
 
@@ -63,6 +64,15 @@ event-level shocks to monthly or quarterly authority series and maps those
 series to country panels through the audited roster. It does not interpolate
 macro data to daily frequency. See `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`.
 
+## SDR exposure module (v0.6)
+
+The `bsmpm.sdr` module validates country-period SDR allocations, holdings,
+reserve stocks and GDP, and constructs explicitly defined exposure ratios.
+Where source-documented optional inputs exist, it also constructs an
+SDR-consistent exchange-rate deviation and a sterilisation-cost proxy. The
+repository includes an empty data schema only; no SDR observations or
+benchmark exchange rates are fabricated. See `docs/PR6_SDR_EXPOSURE.md`.
+
 ## Requirements
 
 Python 3.10+; NumPy and pandas are required. Matplotlib is optional for simulation plots.
@@ -93,6 +103,7 @@ python -m bsmpm.simulate --output outputs
 - `src/bsmpm/empirical.py`: panel validation and fixed-effects estimator.
 - `src/bsmpm/data_io.py`: ingestion, source registry, and provenance manifest.
 - `src/bsmpm/frequency.py`: authority-level event aggregation and panel alignment.
+- `src/bsmpm/sdr.py`: SDR exposure validation and derived metrics.
 - `src/bsmpm/source_audit.py`: country-frame validation and source-audit checks.
 - `src/bsmpm/simulate.py`: illustrative scenario runner.
 - `tests/`: deterministic unit tests, including a synthetic panel.
@@ -101,6 +112,7 @@ python -m bsmpm.simulate --output outputs
 - `docs/DATA_INGESTION.md`: v0.3 ingestion contract and provenance workflow.
 - `docs/PR4_SOURCE_AUDIT.md`: v0.4 country frame, source catalogue, and measurement audit.
 - `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`: v0.5 inference and frequency architecture.
+- `docs/PR6_SDR_EXPOSURE.md`: v0.6 SDR data contract, measures, and limitations.
 - `.github/workflows/tests.yml`: Python 3.10–3.12 CI.
 
 ## Research roadmap
