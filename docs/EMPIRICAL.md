@@ -25,9 +25,9 @@ Thus \(\beta_2<0\) is consistent with attenuation as measured Bitcoin monetary u
 
 ## Implementation
 
-`bsmpm.empirical.validate_panel` checks required columns, unique country-period keys, finite numeric variables, and the [0,1] adoption-share domain. Rows missing any model variable are dropped and counted.
+`sma.empirical.validate_panel` checks required columns, unique country-period keys, finite numeric variables, and the [0,1] adoption-share domain. Rows missing any model variable are dropped and counted.
 
-`bsmpm.empirical.estimate_transmission_panel` estimates the model by least squares with explicit country and period indicator variables. It reports coefficients, country-clustered sandwich standard errors with a conventional finite-sample correction, normal-reference p-value approximations, normal-reference 95% intervals, sample size, cluster count, R-squared, and residual degrees of freedom.
+`sma.empirical.estimate_transmission_panel` estimates the model by least squares with explicit country and period indicator variables. It reports coefficients, country-clustered sandwich standard errors with a conventional finite-sample correction, normal-reference p-value approximations, normal-reference 95% intervals, sample size, cluster count, R-squared, and residual degrees of freedom.
 
 The estimator rejects rank-deficient designs and insufficient residual degrees of freedom rather than silently returning unstable estimates.
 
