@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from bsmpm.autonomy import construct_monetary_autonomy_index
+from sma.autonomy import construct_monetary_autonomy_index
 
 
 class MonetaryAutonomyIndexTests(unittest.TestCase):
