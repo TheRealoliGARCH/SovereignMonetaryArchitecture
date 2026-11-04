@@ -1,0 +1,35 @@
+name: BSMPM tests
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: python -m pip install -e .
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Run illustrative simulation
+        run: python -m bsmpm.simulate --output outputs
+      - name: Upload simulation outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: bsmpm-outputs-python-${{ matrix.python-version }}
+          path: outputs/
