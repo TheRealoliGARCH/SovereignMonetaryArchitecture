@@ -1,4 +1,4 @@
-# BSMPM model specification (v0.1)
+# SMA model specification (v0.1)
 
 ## 1. Economic meaning of adoption
 
