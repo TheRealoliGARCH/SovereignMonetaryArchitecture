@@ -6,7 +6,7 @@ import pandas as pd
 
 ROSTER_COLUMNS = (
     "iso3", "country", "imf_wp24_group", "monetary_policy_authority",
-    "shock_series_id", "shock_sample_start", "shock_sample_end",
+    "shock_series_id", "study_window_start", "study_window_end",
 )
 
 
@@ -33,7 +33,7 @@ def validate_country_roster(roster: pd.DataFrame) -> dict[str, Any]:
     if not frame["imf_wp24_group"].isin(["AE", "EM"]).all():
         raise ValueError("imf_wp24_group must be AE or EM")
     if frame["shock_sample_start"].gt(frame["shock_sample_end"]).any():
-        raise ValueError("shock sample start must not exceed end")
+        raise ValueError("study window start must not exceed end")
     return {
         "countries": int(len(frame)),
         "advanced_economies": int(frame["imf_wp24_group"].eq("AE").sum()),
