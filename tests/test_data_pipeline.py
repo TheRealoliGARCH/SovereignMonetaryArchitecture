@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from bsmpm.data_pipeline import (
+from sma.data_pipeline import (
     load_documented_csv, merge_country_period_sources,
     write_acquisition_manifest,
 )
