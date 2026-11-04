@@ -70,6 +70,19 @@ class TestPanelEstimator(unittest.TestCase):
         self.assertEqual(result.clusters, 12)
         self.assertGreater(result.residual_degrees_of_freedom, 0)
 
+    def test_authority_cluster_count_is_reported(self):
+        frame = sample_panel()
+        frame["authority"] = frame["country"].map(
+            lambda value: f"A{int(value[1:]) // 2}"
+        )
+        frame.loc[0, "outcome"] = np.nan
+        result = estimate_transmission_panel(
+            frame, outcome="outcome", shock="policy_shock",
+            adoption="btc_use_share", cluster_by="authority",
+        )
+        self.assertEqual(result.clusters, 6)
+        self.assertEqual(result.dropped_rows, 1)
+
     def test_missing_columns_fail_clearly(self):
         with self.assertRaisesRegex(ValueError, "missing required"):
             estimate_transmission_panel(
