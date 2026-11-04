@@ -1,83 +1,109 @@
-# Bitcoin–Sovereign Monetary Policy Model (BSMPM)
+# Sovereign Monetary Architecture (SMA)
 
-A reproducible Python implementation of the BSMPM research architecture. The repository combines reduced-form analytical building blocks with an initial empirical country-panel estimator. It is **not yet a calibrated or estimated general-equilibrium model**.
+A reproducible Python research framework for studying sovereign monetary systems, monetary-policy transmission, monetary autonomy, domestic monetary substitution, and the constraints created by international monetary institutions.
 
-## Scope
+The repository began as the **Bitcoin–Sovereign Monetary Policy Model (BSMPM)**. Its original reduced-form Bitcoin/fiat transmission model remains a foundational component. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, and Special Drawing Rights (SDR) exposure and sterilisation-cost measures.
 
-- Monetary transmission under fiat/Bitcoin transaction shares.
-- Nonlinear transmission attenuation and critical adoption thresholds.
-- Endogenous Bitcoin-adoption fixed points with logistic network effects.
-- Reduced-form seigniorage sensitivity and Bitcoin-sector liquidity shortfall.
+**Current implementation: v0.6.** The codebase contains analytical and empirical building blocks; it is not yet a calibrated or estimated general-equilibrium model of the international monetary system.
+
+## Research scope
+
+The current architecture covers:
+
+- **Domestic monetary substitution:** reduced-form monetary transmission under fiat/Bitcoin monetary-use shares.
+- **Nonlinear adoption dynamics:** alternative transmission functions, critical adoption thresholds, and logistic fixed-point equations with network effects.
+- **Sovereign monetary-policy transmission:** country-period panel validation and fixed-effects estimation of heterogeneous policy-shock responses.
+- **Monetary institutions:** explicit distinction between country markets and the monetary authorities responsible for policy shocks.
+- **Multi-frequency data:** event-level policy shocks aggregated to monthly or quarterly authority-level series, then aligned to country panels.
+- **International monetary constraints:** SDR allocations and holdings, foreign-exchange reserves, GDP, exchange-rate deviation measures, and sterilisation-cost proxies.
+- **Data governance:** source registries, country-frame audits, missingness summaries, and SHA-256 provenance manifests.
+
+The framework is designed to support the empirical investigation of a central question:
+
+> Under what institutional and external-balance conditions does domestic monetary substitution alter a sovereign monetary authority's effective capacity to transmit policy?
+
+Bitcoin monetary adoption and SDR exposure are distinct constructs. Their interaction is a research question, not an established empirical result.
+
+## Architecture and implementation status
+
+| Component | Module / location | Status |
+|---|---|---|
+| Reduced-form monetary transmission and adoption dynamics | `src/bsmpm/model.py` | Implemented analytical building blocks |
+| Country-period panel validation and fixed-effects estimator | `src/bsmpm/empirical.py` | Implemented baseline estimator |
+| CSV ingestion, source registry, and provenance manifests | `src/bsmpm/data_io.py` | Implemented |
+| Country roster and source-audit validation | `src/bsmpm/source_audit.py` | Implemented |
+| Event-shock aggregation and authority alignment | `src/bsmpm/frequency.py` | Implemented |
+| SDR exposure and sterilisation-cost measures | `src/bsmpm/sdr.py` | Implemented |
+| Scenario simulation | `src/bsmpm/simulate.py` | Illustrative reduced-form simulation |
+
+The Python package retains the `bsmpm` import namespace for continuity with the original model. The repository's broader name does not imply that every component has already been integrated into one structural model.
+
+## Foundational BSMPM model
+
+The original BSMPM component studies monetary transmission as the fiat/Bitcoin transaction-use share changes. Its reduced-form building blocks include:
+
+- A linear weighted-average transmission coefficient, `K(s) = (1-s)κ_F + sκ_B`.
+- An alternative nonlinear transmission parameterisation.
+- Critical adoption-threshold calculations.
+- A logistic adoption fixed point, `s = Λ(z + ζs)`, allowing multiple equilibria for suitable parameter values.
+- Reduced-form seigniorage sensitivity and Bitcoin-sector liquidity-shortfall measures.
 - Illustrative adoption-welfare trade-offs and scenario simulation.
-- Country-period panel validation and two-way fixed-effects estimation.
-- CSV data ingestion, source-registry validation, and SHA-256 provenance manifests.
-- A source-audited 29-country monetary-policy sample frame and empirical series catalogue.
-- Authority-level clustered inference and event-to-month/quarter shock aggregation.
-- Separate event, daily-market, and lower-frequency macro data architecture.
-- SDR exposure metrics, exchange-rate deviation measures, and sterilisation-cost proxies.
 
-## Model conventions
+Here, `s` denotes a **monetary-use or transaction share**, not Bitcoin's share of household wealth. The linear coefficient is a reduced-form representation; it does not establish that every Bitcoin transaction is insulated from domestic interest rates. The nonlinear form is an alternative specification and must be restricted to economically meaningful parameter values. Multiple fixed points are parameter-dependent: strong feedback alone does not guarantee three roots for every intercept.
 
-1. The adoption share (s) is a *monetary-use/transaction share*, not the Bitcoin share of household wealth.
-2. The linear transmission coefficient is a reduced-form weighted average; it does not establish that every Bitcoin transaction is insulated from domestic rates.
-3. The nonlinear transmission function is an alternative parameterization and must be constrained to economically meaningful values.
-4. The adoption fixed-point equation can have multiple fixed points for appropriate parameter values. Strong feedback alone does not guarantee three roots for every intercept.
-5. Seigniorage sensitivity and welfare are illustrative reduced forms, not accounting identities or calibrated welfare estimates.
-6. No empirical country dataset is bundled. Synthetic data are used only for deterministic software tests.
+These quantities are analytical or illustrative reduced forms. They are not, without further derivation and calibration, accounting identities or measured welfare effects. See [docs/MODEL.md](docs/MODEL.md).
 
-## Empirical estimator (v0.2)
+## Country-panel econometrics
 
-The module `bsmpm.empirical` estimates a country-period specification with country and time fixed effects:
+The baseline estimator in `bsmpm.empirical` estimates a country-period specification with country and time fixed effects:
 
-`outcome ~ policy_shock + adoption_share + policy_shock × adoption_share + controls + country FE + time FE`.
+```text
+outcome ~ policy_shock
+        + adoption_share
+        + policy_shock × adoption_share
+        + controls
+        + country FE
+        + time FE
+```
 
-The interaction coefficient measures how the conditional response to the policy shock varies with Bitcoin monetary-use share. Standard errors are clustered by country. The module validates unique country-period keys, finite numeric data, and the [0,1] adoption-share domain.
+The interaction coefficient describes how the conditional outcome response associated with a policy shock varies with the measured adoption share, conditional on the included controls and fixed effects.
 
-**Causal interpretation is not automatic.** The policy shock must be plausibly exogenous, and reverse causality, time-varying confounding, measurement error, and cross-sectional dependence require separate treatment. The estimator reports normal-reference inference approximations and is intended as a transparent baseline. See [docs/EMPIRICAL.md](docs/EMPIRICAL.md) for the specification, data contract, and limitations.
+The estimator supports a configurable clustering variable. Country clustering is the default; where several country markets share one monetary-policy authority, the authority identifier can be used instead. The source-audited frame contains 29 country markets and 20 monetary authorities; ten euro-area markets share the ECB shock series. These are not 29 independent policy-shock authorities.
 
-## Empirical data ingestion (v0.3)
+The estimator is a transparent baseline, not an identification strategy by itself. Causal interpretation requires a defensible shock design and attention to reverse causality, time-varying confounding, measurement error, serial and cross-sectional dependence, and the number of independent clusters. The current authority-clustered implementation uses a one-way clustered sandwich estimator with a finite-sample correction and normal-reference inference; it is not a wild-cluster bootstrap or a two-way clustered estimator. See [docs/EMPIRICAL.md](docs/EMPIRICAL.md) and [docs/PR5_AUTHORITY_MULTIFREQUENCY.md](docs/PR5_AUTHORITY_MULTIFREQUENCY.md).
 
-The module `bsmpm.data_io` validates country-period CSVs and source-registry
-metadata, counts missing numeric observations, and creates a JSON provenance
-manifest with SHA-256 file hashes. The repository includes empty schema
-templates only; no observed country data are fabricated or bundled. See
-`docs/DATA_INGESTION.md` and `data/README.md`.
+## Data architecture and measurement discipline
 
-The ingestion layer records source URLs but does not fetch them or validate
-licensing, source authenticity, construct validity, or causal identification.
+The repository provides validation contracts, templates, source metadata, and provenance tooling. It does **not** bundle a fabricated country-level empirical dataset.
 
-## Empirical source audit (v0.4)
+- `bsmpm.data_io` validates country-period data and source-registry metadata, summarizes missing numeric observations, and can create JSON provenance manifests containing SHA-256 file hashes.
+- `bsmpm.source_audit` checks the country roster and empirical source catalogue.
+- `bsmpm.frequency` aggregates event-level shocks by monetary authority, shock-series identifier, and target period. It retains event counts and does not treat a period with no event as a zero-valued shock by default.
+- The frequency workflow keeps event, daily-market, and lower-frequency macroeconomic observations distinct. It does not mechanically interpolate macroeconomic data to daily frequency.
 
-The v0.4 source audit adds `data/country_roster.csv`, `data/source_catalog.csv`,
-and an authority-aware event-shock template. The IMF WP/24/224 frame contains
-29 country markets but 20 monetary authorities; ten euro-area markets share
-the ECB shock series. Bitcoin exchange turnover and search interest are
-explicitly labelled proxies, not monetary-use shares. No raw observations are
-fabricated or included. See `docs/PR4_SOURCE_AUDIT.md`.
+Bitcoin exchange turnover, search interest, broad cryptocurrency indices, and general crypto surveys are not interchangeable with Bitcoin monetary-use shares. They must be labelled according to what they actually measure. Source URLs recorded in the catalogue are metadata; their presence does not mean that data have been fetched, independently authenticated, or cleared for redistribution. See [docs/DATA_INGESTION.md](docs/DATA_INGESTION.md), [docs/PR4_SOURCE_AUDIT.md](docs/PR4_SOURCE_AUDIT.md), and [data/README.md](data/README.md).
 
-## Authority-aware inference and frequencies (v0.5)
+## SDR exposure module
 
-The panel estimator accepts `cluster_by`; use
-`cluster_by="monetary_policy_authority"` when multiple country markets share
-one policy-shock authority. The new `bsmpm.frequency` module aggregates
-event-level shocks to monthly or quarterly authority series and maps those
-series to country panels through the audited roster. It does not interpolate
-macro data to daily frequency. See `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`.
+The `bsmpm.sdr` module validates country-period SDR and macro-financial inputs and constructs explicitly defined measures, including:
 
-## SDR exposure module (v0.6)
+- SDR cumulative allocations relative to GDP.
+- SDR holdings relative to foreign-exchange reserves.
+- A descriptive difference between SDR holdings and cumulative allocations.
+- An SDR-consistent exchange-rate deviation, where the required benchmark and actual exchange-rate inputs are supplied using the same quotation convention.
+- An annualised, reduced-form sterilisation-cost proxy, where the required allocation and interest-rate inputs are available.
 
-The `bsmpm.sdr` module validates country-period SDR allocations, holdings,
-reserve stocks and GDP, and constructs explicitly defined exposure ratios.
-Where source-documented optional inputs exist, it also constructs an
-SDR-consistent exchange-rate deviation and a sterilisation-cost proxy. The
-repository includes an empty data schema only; no SDR observations or
-benchmark exchange rates are fabricated. See `docs/PR6_SDR_EXPOSURE.md`.
+The holdings-minus-allocations comparison is **not** a complete IMF net-position accounting measure. The exchange-rate deviation requires a documented benchmark; the module does not invent one. The sterilisation-cost measure is a proxy whose interpretation depends on the supplied allocation basis, currency conversion, rates, and period convention. These measures do not, by themselves, establish that SDR arrangements prevent an optimal monetary policy or identify a causal welfare loss.
 
-## Requirements
+The repository includes an empty SDR schema template, not observed SDR data. See [docs/PR6_SDR_EXPOSURE.md](docs/PR6_SDR_EXPOSURE.md).
 
-Python 3.10+; NumPy and pandas are required. Matplotlib is optional for simulation plots.
+## Requirements and installation
 
-Install:
+- Python 3.10 or later.
+- NumPy and pandas.
+- Matplotlib is optional for simulation plots.
+
+Install the package and development dependencies:
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -85,13 +111,13 @@ python -m pip install -e ".[dev]"
 
 ## Quick start
 
-Run all tests:
+Run the test suite:
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Run illustrative scenarios:
+Run the illustrative scenario simulation:
 
 ```bash
 python -m bsmpm.simulate --output outputs
@@ -99,31 +125,36 @@ python -m bsmpm.simulate --output outputs
 
 ## Repository layout
 
-- `src/bsmpm/model.py`: analytical reduced-form functions.
-- `src/bsmpm/empirical.py`: panel validation and fixed-effects estimator.
-- `src/bsmpm/data_io.py`: ingestion, source registry, and provenance manifest.
-- `src/bsmpm/frequency.py`: authority-level event aggregation and panel alignment.
-- `src/bsmpm/sdr.py`: SDR exposure validation and derived metrics.
-- `src/bsmpm/source_audit.py`: country-frame validation and source-audit checks.
-- `src/bsmpm/simulate.py`: illustrative scenario runner.
-- `tests/`: deterministic unit tests, including a synthetic panel.
-- `docs/MODEL.md`: v0.1 equations and assumptions.
-- `docs/EMPIRICAL.md`: v0.2 estimator, data contract, and identification limitations.
-- `docs/DATA_INGESTION.md`: v0.3 ingestion contract and provenance workflow.
-- `docs/PR4_SOURCE_AUDIT.md`: v0.4 country frame, source catalogue, and measurement audit.
-- `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`: v0.5 inference and frequency architecture.
-- `docs/PR6_SDR_EXPOSURE.md`: v0.6 SDR data contract, measures, and limitations.
-- `.github/workflows/tests.yml`: Python 3.10–3.12 CI.
+- `src/bsmpm/model.py` — reduced-form analytical model.
+- `src/bsmpm/empirical.py` — panel validation and fixed-effects estimator.
+- `src/bsmpm/data_io.py` — data ingestion, source registry, and provenance manifests.
+- `src/bsmpm/source_audit.py` — country-frame and source-catalogue validation.
+- `src/bsmpm/frequency.py` — event-shock aggregation and monetary-authority alignment.
+- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.
+- `src/bsmpm/simulate.py` — illustrative scenario runner.
+- `data/` — documented data contracts and empty templates.
+- `tests/` — deterministic unit tests, including synthetic test data.
+- `docs/MODEL.md` — foundational BSMPM equations and assumptions.
+- `docs/EMPIRICAL.md` — estimator, data contract, and identification limitations.
+- `docs/DATA_INGESTION.md` — ingestion and provenance workflow.
+- `docs/PR4_SOURCE_AUDIT.md` — country frame, source catalogue, and measurement audit.
+- `docs/PR5_AUTHORITY_MULTIFREQUENCY.md` — authority-aware inference and frequency architecture.
+- `docs/PR6_SDR_EXPOSURE.md` — SDR data contract, measures, and limitations.
+- `.github/workflows/tests.yml` — continuous integration across Python 3.10–3.12.
 
 ## Research roadmap
 
-1. Acquire and license-clear the event-level shock series and outcome data identified in the v0.4 source audit.
-2. Separate Bitcoin ownership, payment/transaction use, settlement use, and contract denomination.
-3. Validate policy-shock construction and investigate defensible identification strategies.
-4. Add robustness checks for heterogeneous effects, serial/cross-sectional dependence, and missingness.
-5. Extend toward household, firm, bank, and central-bank optimization and a coherent equilibrium model.
-6. Publish data provenance, estimation code, calibration files, and reproducibility metadata.
+1. Acquire the source-identified event-level policy shocks and outcome data, and verify access, licensing, and redistribution conditions.
+2. Build defensible country-period measures that distinguish Bitcoin ownership, payment and transaction use, settlement use, and contract denomination.
+3. Document SDR allocations, holdings, reserve positions, exchange-rate benchmarks, and sterilisation inputs with consistent accounting and currency conventions.
+4. Validate shock construction and develop identification strategies appropriate to the monetary-authority structure.
+5. Extend inference and robustness analysis for few clusters, serial dependence, cross-sectional dependence, heterogeneous effects, and missing data.
+6. Investigate the interaction between domestic monetary substitution, SDR exposure, reserve constraints, and sovereign monetary-policy autonomy.
+7. Develop and test a coherent structural or equilibrium framework only after the measurement and identification foundations are established.
+8. Publish reproducible data provenance, estimation code, calibration inputs, and reporting metadata.
 
-## Interpretation
+## Interpretation and reproducibility
 
-Unit tests verify software behaviour, not economic assumptions or causal claims. Empirical conclusions require defensible measurements, identified shocks, robustness analysis, and transparent reporting.
+Passing unit tests establishes that specified software behaviours work on the tested inputs. It does not validate economic assumptions, data quality, measurement validity, calibration, causal identification, or the truth of a monetary-policy hypothesis. Empirical conclusions require documented observations, defensible constructs, identified variation, robustness analysis, and transparent reporting.
+
+The project therefore treats the distinction between **implemented software**, **measured empirical quantities**, **estimated relationships**, and **theoretical propositions** as a core research-design principle.
