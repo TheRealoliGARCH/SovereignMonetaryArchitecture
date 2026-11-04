@@ -34,6 +34,7 @@ def logistic(z: float) -> float:
     else:
         e = math.exp(z)
         value = e / (1.0 + e)
+    # Preserve an interior floating-point value when mathematically < 1.
     return min(math.nextafter(1.0, 0.0), max(math.nextafter(0.0, 1.0), value))
 
 
