@@ -47,11 +47,11 @@ definition, frequency, revisions, and licensing in the source registry.
 
 ## Constructed measures
 
-`bsmpm.sdr.validate_sdr_panel` validates keys, required stock fields,
+`sma.sdr.validate_sdr_panel` validates keys, required stock fields,
 nonnegative stocks, positive GDP/reserve denominators, and finite optional
 numeric values.
 
-`bsmpm.sdr.construct_sdr_exposure_metrics` returns the input rows with:
+`sma.sdr.construct_sdr_exposure_metrics` returns the input rows with:
 
 ```
 sdr_allocation_to_gdp
@@ -80,7 +80,7 @@ an annualised reduced-form proxy and requires a period allocation in local
 currency and annual rates. Missing optional inputs remain missing; the module
 does not impute them.
 
-## Relationship to the BSMPM estimator
+## Relationship to the SMA estimator
 
 The constructed SDR measures can be joined to the existing country-period
 panel using `iso3` and the researcher's documented period key. A candidate
@@ -108,7 +108,7 @@ cross-sectional dependence remain material limitations.
 
 ```python
 import pandas as pd
-from bsmpm.sdr import construct_sdr_exposure_metrics
+from sma.sdr import construct_sdr_exposure_metrics
 
 sdr_raw = pd.read_csv("data/sdr_exposure.csv")
 sdr = construct_sdr_exposure_metrics(sdr_raw)
