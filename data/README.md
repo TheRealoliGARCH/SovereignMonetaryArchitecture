@@ -45,3 +45,13 @@ quarter before attaching them to country-period outcome panels. The same
 authority-period innovation may map to several country markets; those market
 rows must not be interpreted as independent shock realizations. See
 `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`.
+
+
+## SDR exposure data (v0.6)
+
+`sdr_exposure_template.csv` defines an empty country-period schema for
+cumulative allocations, holdings, foreign-exchange reserves, GDP, optional
+exchange-rate benchmarks and sterilisation inputs. It is not an observations
+file. Keep cumulative allocation stocks separate from period allocation
+flows; retain currency units, rate conventions, source vintages and licensing.
+See `docs/PR6_SDR_EXPOSURE.md`.
