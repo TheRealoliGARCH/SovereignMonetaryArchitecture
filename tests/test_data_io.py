@@ -59,7 +59,8 @@ class DataIngestionTests(unittest.TestCase):
 
     def test_nonnumeric_outcome_rejected(self):
         frame = sample_panel()
-        frame["outcome"] = frame["outcome"].astype(object)\n        frame.loc[0, "outcome"] = "not-a-number"
+        frame["outcome"] = frame["outcome"].astype(object)
+        frame.loc[0, "outcome"] = "not-a-number"
         with self.assertRaisesRegex(ValueError, "nonnumeric"):
             validate_empirical_dataset(frame)
 
