@@ -2,6 +2,7 @@ import unittest
 import pandas as pd
 
 from bsmpm.source_audit import validate_country_roster
+from bsmpm.data_io import validate_source_registry
 
 
 class CountryRosterTests(unittest.TestCase):
@@ -14,6 +15,13 @@ class CountryRosterTests(unittest.TestCase):
         self.assertEqual(summary["monetary_authorities"], 20)
         self.assertEqual(summary["shock_series"], 20)
         self.assertEqual(summary["shared_euro_area_markets"], 10)
+
+    def test_source_catalog_obeys_registry_contract(self):
+        catalog = pd.read_csv("data/source_catalog.csv", dtype=str)
+        summary = validate_source_registry(catalog)
+        self.assertEqual(summary["records"], 8)
+        self.assertIn("policy_shock_identified", summary["variables"])
+        self.assertIn("btc_exchange_volume_proxy", summary["variables"])
 
     def test_duplicate_iso3_rejected(self):
         roster = pd.read_csv("data/country_roster.csv", dtype=str)
