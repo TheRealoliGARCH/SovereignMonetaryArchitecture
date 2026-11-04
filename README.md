@@ -2,7 +2,7 @@
 
 A reproducible Python research framework for studying sovereign monetary systems, monetary-policy transmission, monetary autonomy, domestic monetary substitution, and the constraints created by international monetary institutions.
 
-The repository began as the **Bitcoin–Sovereign Monetary Policy Model (SMA)**. Its original reduced-form Bitcoin/fiat transmission model remains a foundational component. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, Special Drawing Rights (SDR) exposure and sterilisation-cost measures, integrated transmission estimation, identification diagnostics, reproducible data assembly, a researcher-defined autonomy index, and a structural-dynamics scaffold.
+The repository's foundational component is a reduced-form Bitcoin/fiat monetary-transmission model, originally developed as a standalone research model. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, Special Drawing Rights (SDR) exposure and sterilisation-cost measures, integrated transmission estimation, identification diagnostics, reproducible data assembly, a researcher-defined autonomy index, and a structural-dynamics scaffold.
 
 **Current implementation: v0.11.0.** The codebase contains analytical and empirical building blocks; it is not yet a calibrated or estimated general-equilibrium model of the international monetary system.
 
@@ -46,11 +46,11 @@ Bitcoin monetary adoption and SDR exposure are distinct constructs. Their intera
 | Structural dynamics | `src/sma/structural.py` | Illustrative scenario scaffold |
 | Scenario simulation | `src/sma/simulate.py` | Illustrative reduced-form simulation |
 
-The Python package retains the `sma` import namespace for continuity with the original model. The repository's broader name does not imply that every component has already been integrated into one structural model.
+The Python package and import namespace are now `sma` throughout the repository. The repository's broader name does not imply that every component has already been integrated into one structural model.
 
-## Foundational SMA model
+## Foundational monetary-substitution model
 
-The original SMA component studies monetary transmission as the fiat/Bitcoin transaction-use share changes. Its reduced-form building blocks include:
+The foundational monetary-substitution component studies monetary transmission as the fiat/Bitcoin transaction-use share changes. Its reduced-form building blocks include:
 
 - A linear weighted-average transmission coefficient, `K(s) = (1-s)κ_F + sκ_B`.
 - An alternative nonlinear transmission parameterisation.
