@@ -75,6 +75,8 @@ def validate_sdr_panel(data: pd.DataFrame) -> dict[str, Any]:
     for column in ("fx_reserves_usd", "gdp_usd"):
         if frame[column].le(0).any():
             raise ValueError(f"{column} must be strictly positive")
+    if "sdr_allocation_lcu" in frame.columns and frame["sdr_allocation_lcu"].dropna().lt(0).any():
+        raise ValueError("sdr_allocation_lcu must be nonnegative where observed")
     for column in (
         "exchange_rate_lcu_per_usd",
         "sdr_consistent_exchange_rate_lcu_per_usd",
