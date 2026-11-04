@@ -44,7 +44,7 @@ def prepare_integrated_panel(
     observed = frame[required].dropna()
     if observed.empty:
         raise ValueError("no complete observations for integrated interactions")
-    if not observed.map(lambda value: pd.notna(value) and abs(float(value)) != float("inf")).all().all():
+    if not __import__("numpy").isfinite(observed.to_numpy(dtype=float)).all():
         raise ValueError("integrated-transmission variables must be finite")
     if not observed[bitcoin_use].between(0.0, 1.0).all():
         raise ValueError("Bitcoin monetary-use share must lie in [0, 1]")
