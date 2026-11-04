@@ -79,7 +79,7 @@ def validate_source_registry(registry: pd.DataFrame) -> dict[str, Any]:
     if frame.empty:
         raise ValueError("source registry must contain at least one record")
     for column in SOURCE_COLUMNS:
-        frame[column] = frame[column].fillna("").astype(str).str.strip()
+        frame[column] = frame[column].astype("string").fillna("").str.strip()
         if frame[column].eq("").any():
             raise ValueError(f"source-registry field {column} cannot be blank")
     if frame.duplicated(["source_id", "variable"]).any():
