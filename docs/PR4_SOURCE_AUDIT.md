@@ -19,7 +19,7 @@ are fabricated or scraped into the repository.
 Das and Yao (IMF WP/24/224): 21 advanced economies and 8 emerging markets,
 with daily monetary-policy shock sample coverage reported as 2000-2022.
 
-The country count is not the count of independent monetary-policy authorities.
+The 2000-2022 dates in the roster are the study-wide window, not a guarantee of complete event coverage for every authority; event-level coverage varies, and the China series begins in 2008. The country count is not the count of independent monetary-policy authorities.
 The paper describes 20 central banks and 29 country markets because ten euro
 area country markets share the ECB monetary-policy authority and common
 Eurozone shock series. The roster therefore records both
