@@ -74,20 +74,29 @@ def estimate_transmission_panel(
     controls: Sequence[str] = (),
     country: str = "country",
     period: str = "period",
+    cluster_by: str | None = None,
 ) -> PanelEstimate:
     """Estimate a two-way fixed-effects interaction model.
 
     y_it = beta_0 shock_it + beta_1 adoption_it
            + beta_2 shock_it*adoption_it + controls + country FE + time FE + e_it.
 
-    Standard errors use a country-clustered sandwich covariance estimator with
-    the conventional finite-sample correction. The reported p-values use a
-    standard-normal reference distribution and are asymptotic approximations.
+    Standard errors cluster on ``cluster_by`` (country by default). For
+    samples where multiple country markets share a monetary-policy authority,
+    pass the authority identifier. The reported p-values use a standard-normal
+    reference distribution and are asymptotic approximations.
     """
     frame, dropped = validate_panel(
         data, outcome=outcome, shock=shock, adoption=adoption,
         country=country, period=period, controls=controls,
     )
+    cluster_column = cluster_by or country
+    if cluster_column not in frame.columns:
+        if cluster_column not in data.columns:
+            raise ValueError(f"cluster column {cluster_column!r} is missing")
+        frame[cluster_column] = data.loc[frame.index, cluster_column].to_numpy()
+    if frame[cluster_column].isna().any():
+        raise ValueError("cluster identifiers cannot be missing")
     frame["shock_x_adoption"] = frame[shock] * frame[adoption]
     regressors = [shock, adoption, "shock_x_adoption", *controls]
     x = frame[regressors].astype(float).copy()
@@ -107,11 +116,11 @@ def estimate_transmission_panel(
     residual = y - design @ beta
     bread = np.linalg.inv(design.T @ design)
     meat = np.zeros((nparams, nparams), dtype=float)
-    groups = frame[country].astype(str).to_numpy()
+    groups = frame[cluster_column].astype(str).to_numpy()
     unique_groups = np.unique(groups)
     g = len(unique_groups)
     if g < 2:
-        raise ValueError("at least two country clusters are required")
+        raise ValueError("at least two clusters are required")
     for group in unique_groups:
         mask = groups == group
         score = design[mask].T @ residual[mask]
