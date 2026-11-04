@@ -32,7 +32,7 @@ def validate_country_roster(roster: pd.DataFrame) -> dict[str, Any]:
         raise ValueError("ISO3 country codes must be unique")
     if not frame["imf_wp24_group"].isin(["AE", "EM"]).all():
         raise ValueError("imf_wp24_group must be AE or EM")
-    if frame["shock_sample_start"].gt(frame["shock_sample_end"]).any():
+    if frame["study_window_start"].gt(frame["study_window_end"]).any():
         raise ValueError("study window start must not exceed end")
     return {
         "countries": int(len(frame)),
