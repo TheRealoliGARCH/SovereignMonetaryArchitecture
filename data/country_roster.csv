@@ -1,0 +1,30 @@
+iso3,country,imf_wp24_group,monetary_policy_authority,shock_series_id,shock_sample_start,shock_sample_end,shock_source_note
+AUS,Australia,AE,RBA,RBA_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+AUT,Austria,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+BEL,Belgium,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+BRA,Brazil,EM,BCB,BCB_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+CAN,Canada,AE,BOC,BOC_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+CHL,Chile,EM,BCCh,BCCH_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+CHN,China,EM,PBOC,PBOC_POLICY_SURPRISE,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+FIN,Finland,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+FRA,France,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+DEU,Germany,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+HUN,Hungary,EM,MNB,MNB_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+IND,India,EM,RBI,RBI_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+IRL,Ireland,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+ISR,Israel,AE,BOI,BOI_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+ITA,Italy,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+JPN,Japan,AE,BOJ,BOJ_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+KOR,Korea,AE,BOK,BOK_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+MEX,Mexico,EM,Banxico,BANXICO_13M_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+NLD,Netherlands,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+NZL,New Zealand,AE,RBNZ,RBNZ_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+NOR,Norway,AE,Norges Bank,NORGES_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+POL,Poland,EM,NBP,NBP_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+PRT,Portugal,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+ESP,Spain,AE,ECB,ECB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+SWE,Sweden,AE,Riksbank,RIKSBANK_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+CHE,Switzerland,AE,SNB,SNB_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+THA,Thailand,EM,BOT,BOT_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+GBR,United Kingdom,AE,BoE,BOE_1Y_IRS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
+USA,United States,AE,Federal Reserve,FED_1Y_OIS,2000-01-01,2022-12-31,IMF_WP_2024_224; common ECB series for euro-area country observations
