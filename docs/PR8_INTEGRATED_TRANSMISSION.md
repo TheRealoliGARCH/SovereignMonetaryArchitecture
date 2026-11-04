@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This PR adds an integration layer over the existing BSMPM panel estimator,
+This PR adds an integration layer over the existing SMA panel estimator,
 authority-aware clustering, and SDR measurement module. It does not replace
 those modules or retrieve data.
 
@@ -20,7 +20,7 @@ outcome ~ policy_shock
         + controls + country FE + period FE
 ```
 
-The interaction variables are constructed in `bsmpm.integrated`. The default
+The interaction variables are constructed in `sma.integrated`. The default
 cluster variable is the monetary-policy authority. Researchers may choose an
 alternative documented SDR exposure measure before estimation.
 
