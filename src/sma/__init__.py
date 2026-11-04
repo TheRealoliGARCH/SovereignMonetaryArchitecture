@@ -1,4 +1,4 @@
-"""Bitcoin–Sovereign Monetary Policy Model.
+"""Sovereign Monetary Architecture Python package.
 
 The package deliberately separates mathematical identities and reduced-form
 assumptions from empirically estimated relationships.
