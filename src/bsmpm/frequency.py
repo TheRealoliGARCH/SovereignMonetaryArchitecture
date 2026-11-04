@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
+import numpy as np
 import pandas as pd
 
 
@@ -27,6 +28,8 @@ def aggregate_event_shocks(
     """
     if frequency not in {"M", "Q"}:
         raise ValueError("frequency must be 'M' (monthly) or 'Q' (quarterly)")
+    if not shock_columns or len(set(shock_columns)) != len(shock_columns):
+        raise ValueError("shock_columns must contain unique column names")
     required = [datetime_column, authority, shock_series, *shock_columns]
     missing = [name for name in required if name not in events.columns]
     if missing:
@@ -41,7 +44,7 @@ def aggregate_event_shocks(
         raise ValueError("event timestamps must be valid datetimes")
     for column in shock_columns:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
-        if frame[column].isna().any() or not frame[column].map(lambda x: pd.notna(x) and abs(x) != float("inf")).all():
+        if not np.isfinite(frame[column].to_numpy(dtype=float)).all():
             raise ValueError(f"{column} must contain finite numeric shocks")
     frame["period"] = frame[datetime_column].dt.to_period(frequency).astype(str)
     keys = [authority, shock_series, "period"]
@@ -49,6 +52,8 @@ def aggregate_event_shocks(
         **{column: (column, "sum") for column in shock_columns},
         event_count=(datetime_column, "size"),
     )
+    if not np.isfinite(result[list(shock_columns)].to_numpy(dtype=float)).all():
+        raise ValueError("aggregated shocks overflowed the finite numeric range")
     return result
 
 
