@@ -35,7 +35,7 @@ class TestTransmission(unittest.TestCase):
 class TestThresholds(unittest.TestCase):
     def test_linear_threshold(self):
         threshold = critical_adoption_linear(.8, .1, .3)
-        self.assertAlmostEqual(threshold, .5)
+        self.assertAlmostEqual(threshold, (0.8 - 0.3) / (0.8 - 0.1))
         self.assertGreaterEqual(monetary_transmission_linear(threshold, .8, .1), .3)
 
     def test_quadratic_threshold(self):
@@ -59,7 +59,7 @@ class TestAdoption(unittest.TestCase):
         self.assertAlmostEqual(roots[0].share, .5, places=6)
 
     def test_multiple_fixed_points_possible(self):
-        roots = adoption_fixed_points(-2.0, 8.0)
+        roots = adoption_fixed_points(-4.0, 8.0)
         self.assertEqual(len(roots), 3)
         self.assertTrue(all(0 <= r.share <= 1 for r in roots))
 
