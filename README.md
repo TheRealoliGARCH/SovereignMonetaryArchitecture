@@ -12,7 +12,8 @@ A reproducible Python implementation of the BSMPM research architecture. The rep
 - Country-period panel validation and two-way fixed-effects estimation.
 - CSV data ingestion, source-registry validation, and SHA-256 provenance manifests.
 - A source-audited 29-country monetary-policy sample frame and empirical series catalogue.
-- Country-clustered standard errors and reproducible tests/CI.
+- Authority-level clustered inference and event-to-month/quarter shock aggregation.
+- Separate event, daily-market, and lower-frequency macro data architecture.
 
 ## Model conventions
 
@@ -53,6 +54,15 @@ the ECB shock series. Bitcoin exchange turnover and search interest are
 explicitly labelled proxies, not monetary-use shares. No raw observations are
 fabricated or included. See `docs/PR4_SOURCE_AUDIT.md`.
 
+## Authority-aware inference and frequencies (v0.5)
+
+The panel estimator accepts `cluster_by`; use
+`cluster_by="monetary_policy_authority"` when multiple country markets share
+one policy-shock authority. The new `bsmpm.frequency` module aggregates
+event-level shocks to monthly or quarterly authority series and maps those
+series to country panels through the audited roster. It does not interpolate
+macro data to daily frequency. See `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`.
+
 ## Requirements
 
 Python 3.10+; NumPy and pandas are required. Matplotlib is optional for simulation plots.
@@ -82,6 +92,7 @@ python -m bsmpm.simulate --output outputs
 - `src/bsmpm/model.py`: analytical reduced-form functions.
 - `src/bsmpm/empirical.py`: panel validation and fixed-effects estimator.
 - `src/bsmpm/data_io.py`: ingestion, source registry, and provenance manifest.
+- `src/bsmpm/frequency.py`: authority-level event aggregation and panel alignment.
 - `src/bsmpm/source_audit.py`: country-frame validation and source-audit checks.
 - `src/bsmpm/simulate.py`: illustrative scenario runner.
 - `tests/`: deterministic unit tests, including a synthetic panel.
@@ -89,6 +100,7 @@ python -m bsmpm.simulate --output outputs
 - `docs/EMPIRICAL.md`: v0.2 estimator, data contract, and identification limitations.
 - `docs/DATA_INGESTION.md`: v0.3 ingestion contract and provenance workflow.
 - `docs/PR4_SOURCE_AUDIT.md`: v0.4 country frame, source catalogue, and measurement audit.
+- `docs/PR5_AUTHORITY_MULTIFREQUENCY.md`: v0.5 inference and frequency architecture.
 - `.github/workflows/tests.yml`: Python 3.10–3.12 CI.
 
 ## Research roadmap

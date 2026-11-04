@@ -35,3 +35,13 @@ redistributing any observations.
 See `docs/PR4_SOURCE_AUDIT.md` for sample construction, IMF shock methodology,
 euro-area shared-shock treatment, Bitcoin proxy limitations and the next data
 acquisition gate.
+
+
+## Authority-level event aggregation (v0.5)
+
+Use `shock_events_template.csv` for announcement-level records. Aggregate
+event shocks by monetary authority, shock-series ID, and calendar month or
+quarter before attaching them to country-period outcome panels. The same
+authority-period innovation may map to several country markets; those market
+rows must not be interpreted as independent shock realizations. See
+`docs/PR5_AUTHORITY_MULTIFREQUENCY.md`.
