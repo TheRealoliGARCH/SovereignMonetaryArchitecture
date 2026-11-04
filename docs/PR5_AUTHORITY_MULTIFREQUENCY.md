@@ -23,7 +23,7 @@ sensitivity analysis before substantive claims.
 
 ## Event-to-panel pipeline
 
-The new `bsmpm.frequency.aggregate_event_shocks` function:
+The new `sma.frequency.aggregate_event_shocks` function:
 1. parses announcement timestamps as UTC;
 2. assigns each event to a calendar month or quarter;
 3. sums specified basis-point shock columns within authority, shock-series ID,
@@ -35,7 +35,7 @@ not silently filled with zero. The default shock columns are
 `epsilon_mp_bp` and `epsilon_cbi_bp`; callers may specify another documented
 set of numeric shock columns.
 
-`bsmpm.frequency.attach_authority_shocks` maps an authority-period table to
+`sma.frequency.attach_authority_shocks` maps an authority-period table to
 country-period outcomes through the country roster. It enforces unique
 country-period observations, one roster mapping per country, and unique
 authority-series-period shock records. It rejects unmatched observations
@@ -61,8 +61,8 @@ mechanical frequency conversion.
 ## Example
 
 ```python
-from bsmpm.frequency import aggregate_event_shocks, attach_authority_shocks
-from bsmpm.empirical import estimate_transmission_panel
+from sma.frequency import aggregate_event_shocks, attach_authority_shocks
+from sma.empirical import estimate_transmission_panel
 
 authority_month = aggregate_event_shocks(events, frequency="M")
 panel = attach_authority_shocks(country_outcomes, country_roster, authority_month)
