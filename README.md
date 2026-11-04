@@ -2,9 +2,9 @@
 
 A reproducible Python research framework for studying sovereign monetary systems, monetary-policy transmission, monetary autonomy, domestic monetary substitution, and the constraints created by international monetary institutions.
 
-The repository began as the **Bitcoin–Sovereign Monetary Policy Model (BSMPM)**. Its original reduced-form Bitcoin/fiat transmission model remains a foundational component. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, and Special Drawing Rights (SDR) exposure and sterilisation-cost measures.
+The repository began as the **Bitcoin–Sovereign Monetary Policy Model (BSMPM)**. Its original reduced-form Bitcoin/fiat transmission model remains a foundational component. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, Special Drawing Rights (SDR) exposure and sterilisation-cost measures, integrated transmission estimation, identification diagnostics, reproducible data assembly, a researcher-defined autonomy index, and a structural-dynamics scaffold.
 
-**Current implementation: v0.6.** The codebase contains analytical and empirical building blocks; it is not yet a calibrated or estimated general-equilibrium model of the international monetary system.
+**Current implementation: v0.11.0.** The codebase contains analytical and empirical building blocks; it is not yet a calibrated or estimated general-equilibrium model of the international monetary system.
 
 ## Research scope
 
@@ -16,7 +16,7 @@ The current architecture covers:
 - **Monetary institutions:** explicit distinction between country markets and the monetary authorities responsible for policy shocks.
 - **Multi-frequency data:** event-level policy shocks aggregated to monthly or quarterly authority-level series, then aligned to country panels.
 - **International monetary constraints:** SDR allocations and holdings, foreign-exchange reserves, GDP, exchange-rate deviation measures, and sterilisation-cost proxies.
-- **Data governance:** source registries, country-frame audits, missingness summaries, and SHA-256 provenance manifests.
+- **Data governance:** source registries, country-frame audits, missingness summaries, and SHA-256 provenance manifests.\n- **Integrated transmission:** joint policy-shock, Bitcoin monetary-use, and SDR-exposure interaction design.\n- **Identification diagnostics:** within-authority shock variation, cluster counts, and complete-case support.\n- **Reproducible data assembly:** local CSV ingestion, source metadata, file hashes, and validated country-period joins.\n- **Monetary autonomy:** transparent, weighted composite with explicit component directions.\n- **Structural dynamics:** explicit state-transition and quadratic scenario-loss scaffold.
 
 The framework is designed to support the empirical investigation of a central question:
 
@@ -97,6 +97,46 @@ The holdings-minus-allocations comparison is **not** a complete IMF net-position
 
 The repository includes an empty SDR schema template, not observed SDR data. See [docs/PR6_SDR_EXPOSURE.md](docs/PR6_SDR_EXPOSURE.md).
 
+## Integrated transmission, identification, and data pipeline
+
+The `bsmpm.integrated` module composes the policy-shock × Bitcoin-use
+interaction with SDR exposure, shock × SDR exposure, and the three-way
+shock × Bitcoin-use × SDR-exposure interaction. It defaults to clustering by
+monetary-policy authority. This is a conditional-association specification;
+causal interpretation still requires an identified shock and defensible
+assumptions. See [docs/PR8_INTEGRATED_TRANSMISSION.md](docs/PR8_INTEGRATED_TRANSMISSION.md).
+
+The `bsmpm.identification` module reports pre-estimation design diagnostics:
+authority and country counts, within- and between-authority shock dispersion,
+authorities with within-authority variation, and within-country Bitcoin-use
+variation. These diagnostics do not prove exogeneity, instrument validity, or
+parallel trends. See [docs/PR9_IDENTIFICATION.md](docs/PR9_IDENTIFICATION.md).
+
+The `bsmpm.data_pipeline` module loads locally acquired CSV files with
+researcher-supplied source metadata and SHA-256 hashes, validates unique
+country-period keys, and joins sources without interpolation or imputation.
+It does not scrape or download data and does not establish source authenticity
+or licensing. See [docs/PR10_DATA_PIPELINE.md](docs/PR10_DATA_PIPELINE.md).
+
+## Sovereign monetary autonomy index
+
+The `bsmpm.autonomy` module constructs a weighted 0–1 index from components
+already normalized to [0,1]. Component weights must sum to one, polarity must
+be explicit, and missing components are not silently imputed or reweighted.
+Bitcoin monetary-use share has no default normative direction and can only be
+included with an explicit researcher choice. The composite is a researcher-
+defined measure, not an objective sovereignty ranking. See
+[docs/PR11_MONETARY_AUTONOMY.md](docs/PR11_MONETARY_AUTONOMY.md).
+
+## Structural-dynamics scaffold
+
+The `bsmpm.structural` module defines a state vector containing inflation,
+output, and exchange-rate gaps, Bitcoin monetary-use share, and SDR exposure.
+It provides a one-period scenario transition and quadratic scenario loss with
+explicit parameters. This is not a solved, estimated, or calibrated
+general-equilibrium model; the default parameters are illustrative. See
+[docs/PR12_STRUCTURAL_SCAFFOLD.md](docs/PR12_STRUCTURAL_SCAFFOLD.md).
+
 ## Requirements and installation
 
 - Python 3.10 or later.
@@ -130,7 +170,7 @@ python -m bsmpm.simulate --output outputs
 - `src/bsmpm/data_io.py` — data ingestion, source registry, and provenance manifests.
 - `src/bsmpm/source_audit.py` — country-frame and source-catalogue validation.
 - `src/bsmpm/frequency.py` — event-shock aggregation and monetary-authority alignment.
-- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.
+- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.\n- `src/bsmpm/integrated.py` — integrated monetary-policy transmission specification.\n- `src/bsmpm/identification.py` — pre-estimation identification diagnostics.\n- `src/bsmpm/data_pipeline.py` — documented local data ingestion and assembly.\n- `src/bsmpm/autonomy.py` — weighted monetary-autonomy index.\n- `src/bsmpm/structural.py` — structural-dynamics scenario scaffold.
 - `src/bsmpm/simulate.py` — illustrative scenario runner.
 - `data/` — documented data contracts and empty templates.
 - `tests/` — deterministic unit tests, including synthetic test data.
@@ -139,7 +179,7 @@ python -m bsmpm.simulate --output outputs
 - `docs/DATA_INGESTION.md` — ingestion and provenance workflow.
 - `docs/PR4_SOURCE_AUDIT.md` — country frame, source catalogue, and measurement audit.
 - `docs/PR5_AUTHORITY_MULTIFREQUENCY.md` — authority-aware inference and frequency architecture.
-- `docs/PR6_SDR_EXPOSURE.md` — SDR data contract, measures, and limitations.
+- `docs/PR6_SDR_EXPOSURE.md` — SDR data contract, measures, and limitations.\n- `docs/PR8_INTEGRATED_TRANSMISSION.md` — integrated transmission design.\n- `docs/PR9_IDENTIFICATION.md` — identification and design diagnostics.\n- `docs/PR10_DATA_PIPELINE.md` — reproducible empirical data pipeline.\n- `docs/PR11_MONETARY_AUTONOMY.md` — autonomy-index methodology.\n- `docs/PR12_STRUCTURAL_SCAFFOLD.md` — structural-dynamics assumptions.
 - `.github/workflows/tests.yml` — continuous integration across Python 3.10–3.12.
 
 ## Research roadmap
