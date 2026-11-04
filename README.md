@@ -11,6 +11,7 @@ A reproducible Python implementation of the BSMPM research architecture. The rep
 - Illustrative adoption-welfare trade-offs and scenario simulation.
 - Country-period panel validation and two-way fixed-effects estimation.
 - CSV data ingestion, source-registry validation, and SHA-256 provenance manifests.
+- A source-audited 29-country monetary-policy sample frame and empirical series catalogue.
 - Country-clustered standard errors and reproducible tests/CI.
 
 ## Model conventions
@@ -43,6 +44,15 @@ templates only; no observed country data are fabricated or bundled. See
 The ingestion layer records source URLs but does not fetch them or validate
 licensing, source authenticity, construct validity, or causal identification.
 
+## Empirical source audit (v0.4)
+
+The v0.4 source audit adds `data/country_roster.csv`, `data/source_catalog.csv`,
+and an authority-aware event-shock template. The IMF WP/24/224 frame contains
+29 country markets but 20 monetary authorities; ten euro-area markets share
+the ECB shock series. Bitcoin exchange turnover and search interest are
+explicitly labelled proxies, not monetary-use shares. No raw observations are
+fabricated or included. See `docs/PR4_SOURCE_AUDIT.md`.
+
 ## Requirements
 
 Python 3.10+; NumPy and pandas are required. Matplotlib is optional for simulation plots.
@@ -72,16 +82,18 @@ python -m bsmpm.simulate --output outputs
 - `src/bsmpm/model.py`: analytical reduced-form functions.
 - `src/bsmpm/empirical.py`: panel validation and fixed-effects estimator.
 - `src/bsmpm/data_io.py`: ingestion, source registry, and provenance manifest.
+- `src/bsmpm/source_audit.py`: country-frame validation and source-audit checks.
 - `src/bsmpm/simulate.py`: illustrative scenario runner.
 - `tests/`: deterministic unit tests, including a synthetic panel.
 - `docs/MODEL.md`: v0.1 equations and assumptions.
 - `docs/EMPIRICAL.md`: v0.2 estimator, data contract, and identification limitations.
 - `docs/DATA_INGESTION.md`: v0.3 ingestion contract and provenance workflow.
+- `docs/PR4_SOURCE_AUDIT.md`: v0.4 country frame, source catalogue, and measurement audit.
 - `.github/workflows/tests.yml`: Python 3.10–3.12 CI.
 
 ## Research roadmap
 
-1. Build a documented country-period dataset with provenance and measurement definitions.
+1. Acquire and license-clear the event-level shock series and outcome data identified in the v0.4 source audit.
 2. Separate Bitcoin ownership, payment/transaction use, settlement use, and contract denomination.
 3. Validate policy-shock construction and investigate defensible identification strategies.
 4. Add robustness checks for heterogeneous effects, serial/cross-sectional dependence, and missingness.

@@ -1,0 +1,1 @@
+country,period,monetary_policy_authority,shock_series_id,announcement_id,announcement_datetime_utc,raw_mps_bp,orthogonalized_mps_bp,epsilon_mp_bp,epsilon_cbi_bp,source_id,source_vintage
