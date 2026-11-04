@@ -32,13 +32,14 @@ def validate_panel(
     country: str = "country",
     period: str = "period",
     controls: Sequence[str] = (),
+    extra_columns: Sequence[str] = (),
 ) -> tuple[pd.DataFrame, int]:
     """Validate a country-period panel and drop rows missing model variables.
 
     The country-period key must be unique. Adoption is a monetary-use share
     bounded by [0, 1], not an asset-ownership share.
     """
-    required = list(dict.fromkeys([country, period, outcome, shock, adoption, *controls]))
+    required = list(dict.fromkeys([country, period, outcome, shock, adoption, *controls, *extra_columns]))
     missing = [name for name in required if name not in data.columns]
     if missing:
         raise ValueError(f"missing required columns: {missing}")
@@ -86,15 +87,12 @@ def estimate_transmission_panel(
     pass the authority identifier. The reported p-values use a standard-normal
     reference distribution and are asymptotic approximations.
     """
+    cluster_column = cluster_by or country
     frame, dropped = validate_panel(
         data, outcome=outcome, shock=shock, adoption=adoption,
         country=country, period=period, controls=controls,
+        extra_columns=(() if cluster_column in {country, period, outcome, shock, adoption, *controls} else (cluster_column,)),
     )
-    cluster_column = cluster_by or country
-    if cluster_column not in frame.columns:
-        if cluster_column not in data.columns:
-            raise ValueError(f"cluster column {cluster_column!r} is missing")
-        frame[cluster_column] = data.loc[frame.index, cluster_column].to_numpy()
     if frame[cluster_column].isna().any():
         raise ValueError("cluster identifiers cannot be missing")
     frame["shock_x_adoption"] = frame[shock] * frame[adoption]
