@@ -1,4 +1,4 @@
-# BSMPM v0.4: country frame and empirical source audit
+# SMA v0.4: country frame and empirical source audit
 
 ## Purpose and scope
 
@@ -62,7 +62,7 @@ baseline and is not yet authority-cluster aware.
 
 ## Bitcoin measurement audit
 
-The target construct in the original BSMPM panel is a Bitcoin monetary-use
+The target construct in the original SMA panel is a Bitcoin monetary-use
 share, not Bitcoin ownership or portfolio allocation. The source review finds
 no verified, globally comparable country-period series of the share of
 transactions, payments, settlement, or contracts denominated in Bitcoin.

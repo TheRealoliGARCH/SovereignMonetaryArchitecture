@@ -1,4 +1,4 @@
-"""SDR exposure metrics for the BSMPM empirical architecture.
+"""SDR exposure metrics for the SMA empirical architecture.
 
 The module transforms user-supplied, source-documented country-period data.
 It does not retrieve SDR data, infer missing observations, or establish that

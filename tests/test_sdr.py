@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from bsmpm.sdr import construct_sdr_exposure_metrics, validate_sdr_panel
+from sma.sdr import construct_sdr_exposure_metrics, validate_sdr_panel
 
 
 def sample_sdr_panel():

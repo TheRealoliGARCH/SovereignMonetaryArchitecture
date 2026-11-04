@@ -2,7 +2,7 @@
 
 ## Method
 
-The module `bsmpm.autonomy` constructs a transparent weighted composite from
+The module `sma.autonomy` constructs a transparent weighted composite from
 researcher-supplied components normalized to [0,1]. Higher values must be
 defined as either autonomy-enhancing (+1) or autonomy-reducing (-1) through an
 explicit direction map.

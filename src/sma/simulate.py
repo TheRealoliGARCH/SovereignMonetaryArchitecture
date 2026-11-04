@@ -1,4 +1,4 @@
-"""Run explicitly illustrative BSMPM scenarios and write CSV outputs."""
+"""Run explicitly illustrative SMA scenarios and write CSV outputs."""
 
 from __future__ import annotations
 

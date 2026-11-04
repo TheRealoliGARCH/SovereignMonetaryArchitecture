@@ -1,4 +1,4 @@
-"""Validation helpers for the BSMPM v0.4 empirical source audit."""
+"""Validation helpers for the SMA v0.4 empirical source audit."""
 from __future__ import annotations
 
 from typing import Any

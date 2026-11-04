@@ -1,4 +1,4 @@
-name: BSMPM tests
+name: SMA tests
 
 on:
   push:
@@ -27,9 +27,9 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
       - name: Run illustrative simulation
-        run: python -m bsmpm.simulate --output outputs
+        run: python -m sma.simulate --output outputs
       - name: Upload simulation outputs
         uses: actions/upload-artifact@v4
         with:
-          name: bsmpm-outputs-python-${{ matrix.python-version }}
+          name: sma-outputs-python-${{ matrix.python-version }}
           path: outputs/

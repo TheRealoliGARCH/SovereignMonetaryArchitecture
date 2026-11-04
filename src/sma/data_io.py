@@ -1,4 +1,4 @@
-"""Reproducible ingestion and provenance utilities for BSMPM empirical data.
+"""Reproducible ingestion and provenance utilities for SMA empirical data.
 
 This module validates user-supplied country-period CSVs. It does not download,
 scrape, or fabricate observations and does not certify the validity of sources.
@@ -63,7 +63,7 @@ def validate_empirical_dataset(data: pd.DataFrame) -> dict[str, Any]:
 
 
 def load_country_panel(path: str | Path) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Load a UTF-8 CSV and validate its BSMPM panel structure."""
+    """Load a UTF-8 CSV and validate its SMA panel structure."""
     source = Path(path)
     if not source.is_file():
         raise FileNotFoundError(source)

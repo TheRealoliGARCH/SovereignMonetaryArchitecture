@@ -1,8 +1,8 @@
 import unittest
 import pandas as pd
 
-from bsmpm.source_audit import validate_country_roster
-from bsmpm.data_io import validate_source_registry
+from sma.source_audit import validate_country_roster
+from sma.data_io import validate_source_registry
 
 
 class CountryRosterTests(unittest.TestCase):

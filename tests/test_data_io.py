@@ -5,7 +5,7 @@ import unittest
 
 import pandas as pd
 
-from bsmpm.data_io import (
+from sma.data_io import (
     build_provenance_manifest, load_country_panel, validate_empirical_dataset,
     validate_source_registry, write_provenance_manifest,
 )

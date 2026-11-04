@@ -2,7 +2,7 @@
 
 A reproducible Python research framework for studying sovereign monetary systems, monetary-policy transmission, monetary autonomy, domestic monetary substitution, and the constraints created by international monetary institutions.
 
-The repository began as the **Bitcoin–Sovereign Monetary Policy Model (BSMPM)**. Its original reduced-form Bitcoin/fiat transmission model remains a foundational component. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, Special Drawing Rights (SDR) exposure and sterilisation-cost measures, integrated transmission estimation, identification diagnostics, reproducible data assembly, a researcher-defined autonomy index, and a structural-dynamics scaffold.
+The repository's foundational component is a reduced-form Bitcoin/fiat monetary-transmission model, originally developed as a standalone research model. The research architecture has since expanded to include country-panel econometrics, monetary-authority-aware inference, multi-frequency policy-shock data, source and provenance auditing, Special Drawing Rights (SDR) exposure and sterilisation-cost measures, integrated transmission estimation, identification diagnostics, reproducible data assembly, a researcher-defined autonomy index, and a structural-dynamics scaffold.
 
 **Current implementation: v0.11.0.** The codebase contains analytical and empirical building blocks; it is not yet a calibrated or estimated general-equilibrium model of the international monetary system.
 
@@ -33,24 +33,24 @@ Bitcoin monetary adoption and SDR exposure are distinct constructs. Their intera
 
 | Component | Module / location | Status |
 |---|---|---|
-| Reduced-form monetary transmission and adoption dynamics | `src/bsmpm/model.py` | Implemented analytical building blocks |
-| Country-period panel validation and fixed-effects estimator | `src/bsmpm/empirical.py` | Implemented baseline estimator |
-| CSV ingestion, source registry, and provenance manifests | `src/bsmpm/data_io.py` | Implemented |
-| Country roster and source-audit validation | `src/bsmpm/source_audit.py` | Implemented |
-| Event-shock aggregation and authority alignment | `src/bsmpm/frequency.py` | Implemented |
-| SDR exposure and sterilisation-cost measures | `src/bsmpm/sdr.py` | Implemented |
-| Integrated monetary-policy transmission | `src/bsmpm/integrated.py` | Implemented specification |
-| Identification diagnostics | `src/bsmpm/identification.py` | Implemented pre-estimation diagnostics |
-| Reproducible local data assembly | `src/bsmpm/data_pipeline.py` | Implemented local CSV pipeline |
-| Monetary autonomy index | `src/bsmpm/autonomy.py` | Researcher-defined composite |
-| Structural dynamics | `src/bsmpm/structural.py` | Illustrative scenario scaffold |
-| Scenario simulation | `src/bsmpm/simulate.py` | Illustrative reduced-form simulation |
+| Reduced-form monetary transmission and adoption dynamics | `src/sma/model.py` | Implemented analytical building blocks |
+| Country-period panel validation and fixed-effects estimator | `src/sma/empirical.py` | Implemented baseline estimator |
+| CSV ingestion, source registry, and provenance manifests | `src/sma/data_io.py` | Implemented |
+| Country roster and source-audit validation | `src/sma/source_audit.py` | Implemented |
+| Event-shock aggregation and authority alignment | `src/sma/frequency.py` | Implemented |
+| SDR exposure and sterilisation-cost measures | `src/sma/sdr.py` | Implemented |
+| Integrated monetary-policy transmission | `src/sma/integrated.py` | Implemented specification |
+| Identification diagnostics | `src/sma/identification.py` | Implemented pre-estimation diagnostics |
+| Reproducible local data assembly | `src/sma/data_pipeline.py` | Implemented local CSV pipeline |
+| Monetary autonomy index | `src/sma/autonomy.py` | Researcher-defined composite |
+| Structural dynamics | `src/sma/structural.py` | Illustrative scenario scaffold |
+| Scenario simulation | `src/sma/simulate.py` | Illustrative reduced-form simulation |
 
-The Python package retains the `bsmpm` import namespace for continuity with the original model. The repository's broader name does not imply that every component has already been integrated into one structural model.
+The Python package and import namespace are now `sma` throughout the repository. The repository's broader name does not imply that every component has already been integrated into one structural model.
 
-## Foundational BSMPM model
+## Foundational monetary-substitution model
 
-The original BSMPM component studies monetary transmission as the fiat/Bitcoin transaction-use share changes. Its reduced-form building blocks include:
+The foundational monetary-substitution component studies monetary transmission as the fiat/Bitcoin transaction-use share changes. Its reduced-form building blocks include:
 
 - A linear weighted-average transmission coefficient, `K(s) = (1-s)κ_F + sκ_B`.
 - An alternative nonlinear transmission parameterisation.
@@ -65,7 +65,7 @@ These quantities are analytical or illustrative reduced forms. They are not, wit
 
 ## Country-panel econometrics
 
-The baseline estimator in `bsmpm.empirical` estimates a country-period specification with country and time fixed effects:
+The baseline estimator in `sma.empirical` estimates a country-period specification with country and time fixed effects:
 
 ```text
 outcome ~ policy_shock
@@ -86,16 +86,16 @@ The estimator is a transparent baseline, not an identification strategy by itsel
 
 The repository provides validation contracts, templates, source metadata, and provenance tooling. It does **not** bundle a fabricated country-level empirical dataset.
 
-- `bsmpm.data_io` validates country-period data and source-registry metadata, summarizes missing numeric observations, and can create JSON provenance manifests containing SHA-256 file hashes.
-- `bsmpm.source_audit` checks the country roster and empirical source catalogue.
-- `bsmpm.frequency` aggregates event-level shocks by monetary authority, shock-series identifier, and target period. It retains event counts and does not treat a period with no event as a zero-valued shock by default.
+- `sma.data_io` validates country-period data and source-registry metadata, summarizes missing numeric observations, and can create JSON provenance manifests containing SHA-256 file hashes.
+- `sma.source_audit` checks the country roster and empirical source catalogue.
+- `sma.frequency` aggregates event-level shocks by monetary authority, shock-series identifier, and target period. It retains event counts and does not treat a period with no event as a zero-valued shock by default.
 - The frequency workflow keeps event, daily-market, and lower-frequency macroeconomic observations distinct. It does not mechanically interpolate macroeconomic data to daily frequency.
 
 Bitcoin exchange turnover, search interest, broad cryptocurrency indices, and general crypto surveys are not interchangeable with Bitcoin monetary-use shares. They must be labelled according to what they actually measure. Source URLs recorded in the catalogue are metadata; their presence does not mean that data have been fetched, independently authenticated, or cleared for redistribution. See [docs/DATA_INGESTION.md](docs/DATA_INGESTION.md), [docs/PR4_SOURCE_AUDIT.md](docs/PR4_SOURCE_AUDIT.md), and [data/README.md](data/README.md).
 
 ## SDR exposure module
 
-The `bsmpm.sdr` module validates country-period SDR and macro-financial inputs and constructs explicitly defined measures, including:
+The `sma.sdr` module validates country-period SDR and macro-financial inputs and constructs explicitly defined measures, including:
 
 - SDR cumulative allocations relative to GDP.
 - SDR holdings relative to foreign-exchange reserves.
@@ -109,20 +109,20 @@ The repository includes an empty SDR schema template, not observed SDR data. See
 
 ## Integrated transmission, identification, and data pipeline
 
-The `bsmpm.integrated` module composes the policy-shock × Bitcoin-use
+The `sma.integrated` module composes the policy-shock × Bitcoin-use
 interaction with SDR exposure, shock × SDR exposure, and the three-way
 shock × Bitcoin-use × SDR-exposure interaction. It defaults to clustering by
 monetary-policy authority. This is a conditional-association specification;
 causal interpretation still requires an identified shock and defensible
 assumptions. See [docs/PR8_INTEGRATED_TRANSMISSION.md](docs/PR8_INTEGRATED_TRANSMISSION.md).
 
-The `bsmpm.identification` module reports pre-estimation design diagnostics:
+The `sma.identification` module reports pre-estimation design diagnostics:
 authority and country counts, within- and between-authority shock dispersion,
 authorities with within-authority variation, and within-country Bitcoin-use
 variation. These diagnostics do not prove exogeneity, instrument validity, or
 parallel trends. See [docs/PR9_IDENTIFICATION.md](docs/PR9_IDENTIFICATION.md).
 
-The `bsmpm.data_pipeline` module loads locally acquired CSV files with
+The `sma.data_pipeline` module loads locally acquired CSV files with
 researcher-supplied source metadata and SHA-256 hashes, validates unique
 country-period keys, and joins sources without interpolation or imputation.
 It does not scrape or download data and does not establish source authenticity
@@ -130,7 +130,7 @@ or licensing. See [docs/PR10_DATA_PIPELINE.md](docs/PR10_DATA_PIPELINE.md).
 
 ## Sovereign monetary autonomy index
 
-The `bsmpm.autonomy` module constructs a weighted 0–1 index from components
+The `sma.autonomy` module constructs a weighted 0–1 index from components
 already normalized to [0,1]. Component weights must sum to one, polarity must
 be explicit, and missing components are not silently imputed or reweighted.
 Bitcoin monetary-use share has no default normative direction and can only be
@@ -140,7 +140,7 @@ defined measure, not an objective sovereignty ranking. See
 
 ## Structural-dynamics scaffold
 
-The `bsmpm.structural` module defines a state vector containing inflation,
+The `sma.structural` module defines a state vector containing inflation,
 output, and exchange-rate gaps, Bitcoin monetary-use share, and SDR exposure.
 It provides a one-period scenario transition and quadratic scenario loss with
 explicit parameters. This is not a solved, estimated, or calibrated
@@ -170,26 +170,26 @@ python -m unittest discover -s tests -v
 Run the illustrative scenario simulation:
 
 ```bash
-python -m bsmpm.simulate --output outputs
+python -m sma.simulate --output outputs
 ```
 
 ## Repository layout
 
-- `src/bsmpm/model.py` — reduced-form analytical model.
-- `src/bsmpm/empirical.py` — panel validation and fixed-effects estimator.
-- `src/bsmpm/data_io.py` — data ingestion, source registry, and provenance manifests.
-- `src/bsmpm/source_audit.py` — country-frame and source-catalogue validation.
-- `src/bsmpm/frequency.py` — event-shock aggregation and monetary-authority alignment.
-- `src/bsmpm/sdr.py` — SDR exposure validation and derived measures.
-- `src/bsmpm/integrated.py` — integrated monetary-policy transmission specification.
-- `src/bsmpm/identification.py` — pre-estimation identification diagnostics.
-- `src/bsmpm/data_pipeline.py` — documented local data ingestion and assembly.
-- `src/bsmpm/autonomy.py` — weighted monetary-autonomy index.
-- `src/bsmpm/structural.py` — structural-dynamics scenario scaffold.
-- `src/bsmpm/simulate.py` — illustrative scenario runner.
+- `src/sma/model.py` — reduced-form analytical model.
+- `src/sma/empirical.py` — panel validation and fixed-effects estimator.
+- `src/sma/data_io.py` — data ingestion, source registry, and provenance manifests.
+- `src/sma/source_audit.py` — country-frame and source-catalogue validation.
+- `src/sma/frequency.py` — event-shock aggregation and monetary-authority alignment.
+- `src/sma/sdr.py` — SDR exposure validation and derived measures.
+- `src/sma/integrated.py` — integrated monetary-policy transmission specification.
+- `src/sma/identification.py` — pre-estimation identification diagnostics.
+- `src/sma/data_pipeline.py` — documented local data ingestion and assembly.
+- `src/sma/autonomy.py` — weighted monetary-autonomy index.
+- `src/sma/structural.py` — structural-dynamics scenario scaffold.
+- `src/sma/simulate.py` — illustrative scenario runner.
 - `data/` — documented data contracts and empty templates.
 - `tests/` — deterministic unit tests, including synthetic test data.
-- `docs/MODEL.md` — foundational BSMPM equations and assumptions.
+- `docs/MODEL.md` — foundational SMA equations and assumptions.
 - `docs/EMPIRICAL.md` — estimator, data contract, and identification limitations.
 - `docs/DATA_INGESTION.md` — ingestion and provenance workflow.
 - `docs/PR4_SOURCE_AUDIT.md` — country frame, source catalogue, and measurement audit.

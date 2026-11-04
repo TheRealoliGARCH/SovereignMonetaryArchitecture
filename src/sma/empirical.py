@@ -1,4 +1,4 @@
-"""Country-panel estimation for the BSMPM monetary-transmission hypothesis.
+"""Country-panel estimation for the SMA monetary-transmission hypothesis.
 
 The estimator is descriptive unless the policy-shock variable is externally
 identified and the remaining identifying assumptions are defensible.

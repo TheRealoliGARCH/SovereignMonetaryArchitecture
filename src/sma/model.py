@@ -1,4 +1,4 @@
-"""Core reduced-form equations for BSMPM.
+"""Core reduced-form equations for SMA.
 
 These functions implement the explicitly stated equations. They do not claim
 that the reduced forms are universally valid or empirically estimated.

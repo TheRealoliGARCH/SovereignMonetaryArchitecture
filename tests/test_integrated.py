@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from bsmpm.integrated import (
+from sma.integrated import (
     estimate_integrated_transmission,
     prepare_integrated_panel,
 )

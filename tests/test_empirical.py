@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from bsmpm.empirical import estimate_transmission_panel, validate_panel
+from sma.empirical import estimate_transmission_panel, validate_panel
 
 
 def sample_panel(seed=17):

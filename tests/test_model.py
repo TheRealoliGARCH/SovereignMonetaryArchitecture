@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from bsmpm.model import (
+from sma.model import (
     adoption_fixed_points,
     critical_adoption_linear,
     critical_adoption_quadratic,

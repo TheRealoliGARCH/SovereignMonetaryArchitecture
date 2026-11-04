@@ -51,7 +51,7 @@ or publishing observations.
 
 Example:
 
-    from bsmpm.data_io import write_provenance_manifest
+    from sma.data_io import write_provenance_manifest
 
     write_provenance_manifest(
         "data/raw/country_panel.csv",
